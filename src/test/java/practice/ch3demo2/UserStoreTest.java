@@ -18,8 +18,7 @@ import practice.ch3demo2.service.JpaUserDetailsManager;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = { SpringDataJpaConfig.class, SecurityConfig.class})
@@ -49,7 +48,7 @@ public class UserStoreTest {
 
         assertAll(
                 () -> assertEquals("john", found.getUsername()),
-                () -> assertEquals(passwordEncoder.encode("1234"), found.getPassword()),
+                () -> assertTrue(passwordEncoder.matches("1234", found.getPassword())),
                 () -> assertEquals(2, found.getAuthorities().size())
         );
     }
