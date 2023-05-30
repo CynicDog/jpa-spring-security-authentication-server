@@ -2,6 +2,7 @@ package practice.ch3demo2.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +16,11 @@ import static practice.ch3demo2.model.SecurityUser.toAuthorities;
 public class JpaUserDetailsManager implements UserDetailsManager {
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public JpaUserDetailsManager(UserRepository userRepository) {
+    public JpaUserDetailsManager(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -35,7 +38,7 @@ public class JpaUserDetailsManager implements UserDetailsManager {
 
         User user = new User(
                 userDetails.getUsername(),
-                userDetails.getPassword(),
+                passwordEncoder.encode(userDetails.getPassword()),
                 toAuthorities(userDetails.getUsername(), userDetails.getAuthorities()));
 
         userRepository.save(user);
@@ -47,7 +50,7 @@ public class JpaUserDetailsManager implements UserDetailsManager {
         User user = userRepository.findByUsername(userDetails.getUsername());
 
         if (user != null) {
-            user.setPassword(userDetails.getPassword());
+            user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
             userRepository.save(user);
         }
     }
@@ -68,7 +71,7 @@ public class JpaUserDetailsManager implements UserDetailsManager {
         User user = userRepository.findByUsername(s);
 
         if (user != null) {
-            user.setPassword(s1);
+            user.setPassword(passwordEncoder.encode(s1));
             userRepository.save(user);
         }
     }

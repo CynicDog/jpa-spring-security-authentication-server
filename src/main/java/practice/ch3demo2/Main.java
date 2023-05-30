@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import practice.ch3demo2.model.Authority;
 import practice.ch3demo2.model.SecurityUser;
 import practice.ch3demo2.model.User;
@@ -20,9 +21,9 @@ public class Main {
 	}
 
 	@Bean
-	public CommandLineRunner dataLoader(UserRepository userRepository) {
+	public CommandLineRunner dataLoader(UserRepository userRepository, PasswordEncoder passwordEncoder) {
 
-		JpaUserDetailsManager jpaUserDetailsManager = new JpaUserDetailsManager(userRepository);
+		JpaUserDetailsManager jpaUserDetailsManager = new JpaUserDetailsManager(userRepository, passwordEncoder);
 
 		return new CommandLineRunner() {
 			@Override
