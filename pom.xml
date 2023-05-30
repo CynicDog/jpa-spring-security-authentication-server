@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>practice</groupId>
-	<artifactId>jpa-jpa</artifactId>
+	<artifactId>jpa-integration</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ch3-demo-2</name>
-	<description>ch3-demo-2</description>
+	<name>jpa-security</name>
+	<description>jpa-security</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>

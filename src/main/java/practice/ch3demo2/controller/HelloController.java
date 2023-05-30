@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
     @GetMapping("/hello")
-    public String hello() { return "Hello, Spring Security (JPA - JPA) :)"; }
+    public String hello() { return "Hello, Spring Security with the integration of JPA :)"; }
 }
