@@ -10,6 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import practice.ch3demo2.handlers.CustomAuthenticationFailureHandler;
+import practice.ch3demo2.handlers.CustomAuthenticationSuccessHandler;
 import practice.ch3demo2.repository.UserRepository;
 import practice.ch3demo2.service.JpaUserDetailsManager;
 
@@ -29,11 +33,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .httpBasic();
+
+        http.formLogin(
+                formLoginConfigurer -> {
+                    formLoginConfigurer.failureHandler(authenticationFailureHandler());
+                    formLoginConfigurer.successHandler(authenticationSuccessHandler());
+                }
+        ).httpBasic();
+
+        http.authorizeRequests()
+                .anyRequest()
+                .authenticated();
     }
 
     @Bean
@@ -46,9 +56,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder(8);
     }
 
-//    @Bean
-//    public InitializingBean initializingBean() {
-//        return () -> SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
-//    }
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
+    }
 }
 

@@ -11,6 +11,7 @@ import practice.ch3demo2.model.User;
 import practice.ch3demo2.repository.UserRepository;
 import practice.ch3demo2.service.JpaUserDetailsManager;
 
+import java.util.Collections;
 import java.util.List;
 
 @SpringBootApplication
@@ -28,11 +29,15 @@ public class Main {
 		return new CommandLineRunner() {
 			@Override
 			public void run(String... args) throws Exception {
-				SecurityUser user = new SecurityUser(new User("jane", "1234",
-										List.of(new Authority("jane", "read"),
-												new Authority("jane", "write"))));
+				SecurityUser user1 = new SecurityUser(new User("jane", "1234",
+						List.of(new Authority("jane", "read"),
+								new Authority("jane", "write"))));
 
-				jpaUserDetailsManager.createUser(user);
+				SecurityUser user2 = new SecurityUser(new User("joe", "1234",
+						Collections.emptyList()));
+
+				jpaUserDetailsManager.createUser(user1);
+				jpaUserDetailsManager.createUser(user2);
 			}
 		};
 	}
