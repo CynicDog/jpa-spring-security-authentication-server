@@ -1,6 +1,6 @@
 package practice.ch3demo2.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jboss.logging.Logger;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.DefaultCsrfToken;
@@ -18,6 +18,8 @@ public class CsrfTokenService implements CsrfTokenRepository {
 
     private TokenRepository tokenRepository;
 
+    private Logger logger = Logger.getLogger(CsrfTokenService.class.getName());
+
     public CsrfTokenService(TokenRepository tokenRepository) {
         this.tokenRepository = tokenRepository;
     }
@@ -27,6 +29,8 @@ public class CsrfTokenService implements CsrfTokenRepository {
 
         String uuid = UUID.randomUUID().toString();
 
+        logger.info("A CSRF token for a session generated.");
+
         return new DefaultCsrfToken("X-CSRF-TOKEN", "_csrf", uuid);
     }
 
@@ -34,6 +38,7 @@ public class CsrfTokenService implements CsrfTokenRepository {
     public void saveToken(CsrfToken csrfToken, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 
         String sessionId = httpServletRequest.getSession().getId();
+
         Optional<Token> existingToken = tokenRepository.findTokenBySessionId(sessionId);
 
         if (existingToken.isPresent()) {
@@ -45,6 +50,7 @@ public class CsrfTokenService implements CsrfTokenRepository {
             token.setToken(csrfToken.getToken());
             token.setSessionId(sessionId);
 
+            logger.info("Saving a CSRF token for a session.");
             tokenRepository.save(token);
         }
     }
@@ -53,10 +59,13 @@ public class CsrfTokenService implements CsrfTokenRepository {
     public CsrfToken loadToken(HttpServletRequest httpServletRequest) {
 
         String sessionId = httpServletRequest.getSession().getId();
+
+        logger.info("Load a CSRF token for a session.");
         Optional<Token> existingToken = tokenRepository.findTokenBySessionId(sessionId);
 
         if (existingToken.isPresent()) {
             Token token = existingToken.get();
+
             return new DefaultCsrfToken("X-CSRF-TOKEN", "_csrf", token.getToken());
         }
 

@@ -1,5 +1,6 @@
 package practice.ch3demo2.service;
 
+import org.jboss.logging.Logger;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,8 @@ public class JpaUserDetailsManager implements UserDetailsManager {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
+    private Logger logger = Logger.getLogger(JpaUserDetailsManager.class.getName());
+
     public JpaUserDetailsManager(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -26,10 +29,12 @@ public class JpaUserDetailsManager implements UserDetailsManager {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
+        logger.info("Loading a user by the username.");
         User user = userRepository.findByUsername(s);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
+
         return new SecurityUser(user);
     }
 
@@ -41,6 +46,7 @@ public class JpaUserDetailsManager implements UserDetailsManager {
                 passwordEncoder.encode(userDetails.getPassword()),
                 toAuthorities(userDetails.getUsername(), userDetails.getAuthorities()));
 
+        logger.info("Creating a user with the username of '" + user.getUsername() + "'.");
         userRepository.save(user);
     }
 
@@ -51,6 +57,8 @@ public class JpaUserDetailsManager implements UserDetailsManager {
 
         if (user != null) {
             user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
+
+            logger.info("Updating a user with the username of '" + user.getUsername() + "'.");
             userRepository.save(user);
         }
     }
@@ -61,6 +69,8 @@ public class JpaUserDetailsManager implements UserDetailsManager {
         User user = userRepository.findByUsername(s);
 
         if (user != null) {
+
+            logger.info("Deleting a user with the username of '" + user.getUsername() + "'.");
             userRepository.delete(user);
         }
     }
@@ -72,6 +82,8 @@ public class JpaUserDetailsManager implements UserDetailsManager {
 
         if (user != null) {
             user.setPassword(passwordEncoder.encode(s1));
+
+            logger.info("Updating a user with the username of '" + user.getUsername() + "'.");
             userRepository.save(user);
         }
     }
