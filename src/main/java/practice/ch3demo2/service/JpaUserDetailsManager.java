@@ -7,7 +7,7 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
 
 import practice.ch3demo2.model.SecurityUser;
-import practice.ch3demo2.model.User;
+import practice.ch3demo2.entity.User;
 import practice.ch3demo2.repository.UserRepository;
 
 import static practice.ch3demo2.model.SecurityUser.toAuthorities;

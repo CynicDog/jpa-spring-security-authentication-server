@@ -1,4 +1,4 @@
-package practice.ch3demo2.model;
+package practice.ch3demo2.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
