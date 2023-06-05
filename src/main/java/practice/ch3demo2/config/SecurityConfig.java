@@ -51,9 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 }
         ).httpBasic();
 
-        http.authorizeRequests()
-                .anyRequest()
-                .authenticated();
+        http.authorizeRequests(authRequestsConfigurer ->
+                authRequestsConfigurer
+                        .antMatchers("/hello").hasAuthority("read")
+                        .anyRequest().authenticated()
+        );
     }
 
     @Bean
