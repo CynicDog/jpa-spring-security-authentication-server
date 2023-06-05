@@ -1,4 +1,4 @@
-package practice.ch3demo2.handlers;
+package practice.ch3demo2.handler;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;

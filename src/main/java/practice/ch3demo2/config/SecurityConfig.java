@@ -12,8 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import practice.ch3demo2.handlers.CustomAuthenticationFailureHandler;
-import practice.ch3demo2.handlers.CustomAuthenticationSuccessHandler;
+import practice.ch3demo2.handler.CustomAuthenticationFailureHandler;
+import practice.ch3demo2.handler.CustomAuthenticationSuccessHandler;
 import practice.ch3demo2.repository.UserRepository;
 import practice.ch3demo2.service.JpaUserDetailsManager;
 
