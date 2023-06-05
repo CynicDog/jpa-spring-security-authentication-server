@@ -19,6 +19,8 @@ public class Token {
     private String sessionId;
     private String token;
 
+    private String username;
+
     @CreationTimestamp
     private Date createdTime;
 
@@ -52,5 +54,13 @@ public class Token {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

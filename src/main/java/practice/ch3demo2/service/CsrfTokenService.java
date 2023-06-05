@@ -1,6 +1,8 @@
 package practice.ch3demo2.service;
 
 import org.jboss.logging.Logger;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.DefaultCsrfToken;
@@ -37,6 +39,9 @@ public class CsrfTokenService implements CsrfTokenRepository {
     @Override
     public void saveToken(CsrfToken csrfToken, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 
+        logger.info("Saving a CSRF token for a session.");
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String sessionId = httpServletRequest.getSession().getId();
 
         Optional<Token> existingToken = tokenRepository.findTokenBySessionId(sessionId);
@@ -50,7 +55,10 @@ public class CsrfTokenService implements CsrfTokenRepository {
             token.setToken(csrfToken.getToken());
             token.setSessionId(sessionId);
 
-            logger.info("Saving a CSRF token for a session.");
+            if (authentication != null) {
+                token.setUsername(authentication.getName());
+            }
+
             tokenRepository.save(token);
         }
     }
