@@ -1,9 +1,12 @@
 package practice.ch3demo2.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name = "token")
@@ -15,6 +18,9 @@ public class Token {
 
     private String sessionId;
     private String token;
+
+    @CreationTimestamp
+    private Date createdTime;
 
     public Token() {
     }
