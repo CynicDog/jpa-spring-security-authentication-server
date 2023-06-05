@@ -1,31 +1,40 @@
 package practice.ch3demo2;
 
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+
 import practice.ch3demo2.config.SecurityConfig;
 import practice.ch3demo2.config.SpringDataJpaConfig;
 import practice.ch3demo2.controller.HelloController;
 import practice.ch3demo2.entity.Authority;
+import practice.ch3demo2.entity.Token;
 import practice.ch3demo2.model.SecurityUser;
 import practice.ch3demo2.entity.User;
+import practice.ch3demo2.repository.TokenRepository;
 import practice.ch3demo2.repository.UserRepository;
+import practice.ch3demo2.service.CsrfTokenService;
 import practice.ch3demo2.service.JpaUserDetailsManager;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -36,11 +45,20 @@ public class SecurityTests {
     @Autowired
     private MockMvc mvc;
 
+    @Mock
+    private HttpServletRequest httpServletRequest;
+
+    @Mock
+    private HttpServletResponse httpServletResponse;
+
     @Autowired
     UserRepository userRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Mock
+    TokenRepository tokenRepository;
 
     @Test
     public void databaseConnectionTest() {
@@ -65,7 +83,7 @@ public class SecurityTests {
     }
 
     @Test
-    public void loggingWithAuthentication() throws Exception {
+    public void loggingWithAuthenticationTest() throws Exception {
 
         JpaUserDetailsManager jpaUserDetailsManager = new JpaUserDetailsManager(userRepository, passwordEncoder);
 
@@ -77,8 +95,30 @@ public class SecurityTests {
 
         jpaUserDetailsManager.createUser(userDetails);
 
-        mvc.perform(get("/hello")
-                .with(httpBasic("bill", "1234")))
-                .andExpect(status().isOk());
+        mvc.perform(formLogin("/login").user("bill").password("1234"))
+                .andExpect(authenticated());
+    }
+
+    @Test
+    public void csrfServiceTest() {
+
+        CsrfTokenService csrfTokenService = new CsrfTokenService(tokenRepository);
+
+        String sessionId = "sessionId for testing";
+
+        Token token = new Token();
+        token.setToken("token for testing");
+        token.setSessionId(sessionId);
+        token.setUsername("username for testing");
+
+        when(httpServletRequest.getSession()).thenReturn(mock(HttpSession.class));
+        when(httpServletRequest.getSession().getId()).thenReturn(sessionId);
+        when(tokenRepository.findTokenBySessionId(sessionId)).thenReturn(Optional.of(token));
+
+        CsrfToken csrfToken = csrfTokenService.loadToken(httpServletRequest);
+
+        assertEquals("X-CSRF-TOKEN", csrfToken.getHeaderName());
+        assertEquals("_csrf", csrfToken.getParameterName());
+        assertEquals("token for testing", csrfToken.getToken());
     }
 }
