@@ -42,14 +42,11 @@ public class CsrfTokenService implements CsrfTokenRepository {
         logger.info("Saving a CSRF token for a session.");
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String sessionId = httpServletRequest.getSession().getId();
 
+        String sessionId = httpServletRequest.getSession().getId();
         Optional<Token> existingToken = tokenRepository.findTokenBySessionId(sessionId);
 
-        if (existingToken.isPresent()) {
-            Token token = existingToken.get();
-            token.setToken(csrfToken.getToken());
-        } else {
+        if (existingToken.isEmpty()) {
             Token token = new Token();
 
             token.setToken(csrfToken.getToken());
