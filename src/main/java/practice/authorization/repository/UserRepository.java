@@ -1,8 +1,8 @@
-package practice.ch3demo2.repository;
+package practice.authorization.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import practice.ch3demo2.entity.User;
+import practice.authorization.entity.User;
 
 import java.util.Optional;
 

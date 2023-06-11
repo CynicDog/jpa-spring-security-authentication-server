@@ -1,7 +1,7 @@
-package practice.ch3demo2.repository;
+package practice.authorization.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import practice.ch3demo2.entity.Otp;
+import practice.authorization.entity.Otp;
 
 import java.util.Optional;
 

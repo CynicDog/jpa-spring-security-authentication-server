@@ -1,4 +1,4 @@
-package practice.ch3demo2.util;
+package practice.authorization.util;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;

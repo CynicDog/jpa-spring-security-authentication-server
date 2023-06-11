@@ -1,4 +1,4 @@
-package practice.ch3demo2.entity;
+package practice.authorization.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;

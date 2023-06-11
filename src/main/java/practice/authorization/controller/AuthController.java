@@ -1,14 +1,14 @@
-package practice.ch3demo2.controller;
+package practice.authorization.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import practice.ch3demo2.entity.Otp;
-import practice.ch3demo2.entity.User;
-import practice.ch3demo2.model.SecurityUser;
-import practice.ch3demo2.service.JpaUserDetailsManager;
+import practice.authorization.entity.Otp;
+import practice.authorization.entity.User;
+import practice.authorization.model.SecurityUser;
+import practice.authorization.service.JpaUserDetailsManager;
 
 import javax.servlet.http.HttpServletResponse;
 

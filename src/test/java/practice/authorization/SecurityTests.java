@@ -1,4 +1,4 @@
-package practice.ch3demo2;
+package practice.authorization;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,23 +12,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import practice.ch3demo2.config.SecurityConfig;
-import practice.ch3demo2.config.SpringDataJpaConfig;
-import practice.ch3demo2.controller.AuthController;
-import practice.ch3demo2.entity.Authority;
-import practice.ch3demo2.model.SecurityUser;
-import practice.ch3demo2.entity.User;
-import practice.ch3demo2.repository.OtpRepository;
-import practice.ch3demo2.repository.UserRepository;
-import practice.ch3demo2.service.JpaUserDetailsManager;
+import practice.authorization.config.SecurityConfig;
+import practice.authorization.config.SpringDataJpaConfig;
+import practice.authorization.controller.AuthController;
+import practice.authorization.repository.OtpRepository;
+import practice.authorization.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
-import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)

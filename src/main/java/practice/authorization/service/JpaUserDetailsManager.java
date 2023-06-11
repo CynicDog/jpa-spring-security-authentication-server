@@ -1,4 +1,4 @@
-package practice.ch3demo2.service;
+package practice.authorization.service;
 
 import org.jboss.logging.Logger;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -8,17 +8,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
 
-import practice.ch3demo2.entity.Otp;
-import practice.ch3demo2.model.SecurityUser;
-import practice.ch3demo2.entity.User;
-import practice.ch3demo2.repository.OtpRepository;
-import practice.ch3demo2.repository.UserRepository;
-import practice.ch3demo2.util.OneTimePasswordUtil;
+import practice.authorization.entity.Otp;
+import practice.authorization.model.SecurityUser;
+import practice.authorization.entity.User;
+import practice.authorization.repository.OtpRepository;
+import practice.authorization.repository.UserRepository;
+import practice.authorization.util.OneTimePasswordUtil;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
 
-import static practice.ch3demo2.model.SecurityUser.toAuthorities;
+import static practice.authorization.model.SecurityUser.toAuthorities;
 
 @Component
 @Transactional

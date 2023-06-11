@@ -1,32 +1,26 @@
-package practice.ch3demo2.entity;
+package practice.authorization.entity;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "otps")
-public class Otp {
+@Table(name = "authorities")
+public class Authority {
 
     @Id @GeneratedValue
     private Long id;
-
     private String username;
+    private String authority;
 
-    private String otpCode;
-
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    public Otp() { }
-
-    public Otp(String username, String otp) {
+    public Authority(String username, String authority) {
         this.username = username;
-        this.otpCode = otp;
+        this.authority = authority;
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Authority() { }
 
     public String getUsername() {
         return username;
@@ -36,12 +30,12 @@ public class Otp {
         this.username = username;
     }
 
-    public String getOtpCode() {
-        return otpCode;
+    public String getAuthority() {
+        return authority;
     }
 
-    public void setOtpCode(String otp) {
-        this.otpCode = otp;
+    public void setAuthority(String authority) {
+        this.authority = authority;
     }
 
     public User getUser() {

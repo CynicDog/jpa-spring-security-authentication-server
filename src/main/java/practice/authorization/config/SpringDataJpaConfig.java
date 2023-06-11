@@ -1,4 +1,4 @@
-package practice.ch3demo2.config;
+package practice.authorization.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "practice.ch3demo2.repository")
+@EnableJpaRepositories(basePackages = "practice.authorization.repository")
 public class SpringDataJpaConfig {
 
     @Bean
@@ -50,7 +50,7 @@ public class SpringDataJpaConfig {
 
         localContainerEntityManagerFactoryBean.setJpaProperties(properties);
         localContainerEntityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter());
-        localContainerEntityManagerFactoryBean.setPackagesToScan("practice.ch3demo2");
+        localContainerEntityManagerFactoryBean.setPackagesToScan("practice.authorization");
 
         return localContainerEntityManagerFactoryBean;
     }

@@ -1,16 +1,16 @@
-package practice.ch3demo2;
+package practice.authorization;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import practice.ch3demo2.entity.Authority;
-import practice.ch3demo2.model.SecurityUser;
-import practice.ch3demo2.entity.User;
-import practice.ch3demo2.repository.OtpRepository;
-import practice.ch3demo2.repository.UserRepository;
-import practice.ch3demo2.service.JpaUserDetailsManager;
+import practice.authorization.entity.Authority;
+import practice.authorization.model.SecurityUser;
+import practice.authorization.entity.User;
+import practice.authorization.repository.OtpRepository;
+import practice.authorization.repository.UserRepository;
+import practice.authorization.service.JpaUserDetailsManager;
 
 import java.util.Collections;
 import java.util.List;

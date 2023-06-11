@@ -1,4 +1,4 @@
-package practice.ch3demo2.config;
+package practice.authorization.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,10 +11,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import practice.ch3demo2.filter.SessionIdLoggingFilter;
-import practice.ch3demo2.repository.OtpRepository;
-import practice.ch3demo2.repository.UserRepository;
-import practice.ch3demo2.service.JpaUserDetailsManager;
+import practice.authorization.filter.SessionIdLoggingFilter;
+import practice.authorization.repository.OtpRepository;
+import practice.authorization.repository.UserRepository;
+import practice.authorization.service.JpaUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity

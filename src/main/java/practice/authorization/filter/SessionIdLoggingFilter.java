@@ -1,4 +1,4 @@
-package practice.ch3demo2.filter;
+package practice.authorization.filter;
 
 import org.jboss.logging.Logger;
 import org.springframework.stereotype.Component;
