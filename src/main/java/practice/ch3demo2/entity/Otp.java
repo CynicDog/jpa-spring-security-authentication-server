@@ -13,7 +13,7 @@ public class Otp {
 
     private String otpCode;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
