@@ -10,14 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
-import practice.ch3demo2.handler.CustomAuthenticationFailureHandler;
-import practice.ch3demo2.handler.CustomAuthenticationSuccessHandler;
-import practice.ch3demo2.repository.TokenRepository;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import practice.ch3demo2.filter.SessionIdLoggingFilter;
+import practice.ch3demo2.repository.OtpRepository;
 import practice.ch3demo2.repository.UserRepository;
-import practice.ch3demo2.service.CsrfTokenService;
 import practice.ch3demo2.service.JpaUserDetailsManager;
 
 @Configuration
@@ -28,7 +24,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserRepository userRepository;
 
     @Autowired
-    private TokenRepository tokenRepository;
+    private OtpRepository otpRepository;
+
+    @Autowired
+    private SessionIdLoggingFilter sessionIdLoggingFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -40,47 +39,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf(csrfConfigurer -> {
-            csrfConfigurer.csrfTokenRepository(csrfTokenRepository());
-        });
+        http.csrf().disable();
 
-        http.formLogin(
-                formLoginConfigurer -> {
-                    formLoginConfigurer.failureHandler(authenticationFailureHandler());
-                    formLoginConfigurer.successHandler(authenticationSuccessHandler());
-                }
-        ).httpBasic();
+        http.addFilterAt(sessionIdLoggingFilter, BasicAuthenticationFilter.class);
 
         http.authorizeRequests(authRequestsConfigurer ->
                 authRequestsConfigurer
-                        .antMatchers("/hello").hasAuthority("read")
-                        .anyRequest().authenticated()
+                        .anyRequest()
+                        .permitAll()
         );
     }
 
     @Bean
-    public CsrfTokenRepository csrfTokenRepository() {
-        return new CsrfTokenService(tokenRepository);
-    }
-
-    @Bean
     public UserDetailsService userDetailsService() {
-        return new JpaUserDetailsManager(userRepository, passwordEncoder());
+        return new JpaUserDetailsManager(userRepository, passwordEncoder(), otpRepository);
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(8);
-    }
-
-    @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new CustomAuthenticationSuccessHandler();
     }
 }
 

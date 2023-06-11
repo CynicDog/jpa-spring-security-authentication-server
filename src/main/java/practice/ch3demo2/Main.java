@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import practice.ch3demo2.entity.Authority;
 import practice.ch3demo2.model.SecurityUser;
 import practice.ch3demo2.entity.User;
+import practice.ch3demo2.repository.OtpRepository;
 import practice.ch3demo2.repository.UserRepository;
 import practice.ch3demo2.service.JpaUserDetailsManager;
 
@@ -22,9 +23,9 @@ public class Main {
 	}
 
 	@Bean
-	public CommandLineRunner dataLoader(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+	public CommandLineRunner dataLoader(UserRepository userRepository, PasswordEncoder passwordEncoder, OtpRepository otpRepository) {
 
-		JpaUserDetailsManager jpaUserDetailsManager = new JpaUserDetailsManager(userRepository, passwordEncoder);
+		JpaUserDetailsManager jpaUserDetailsManager = new JpaUserDetailsManager(userRepository, passwordEncoder, otpRepository);
 
 		return new CommandLineRunner() {
 			@Override
